@@ -1,5 +1,14 @@
 # Admin Account - Testing Guide
 
+## Bugs to be addressed and fixed
+1. login seems to refresh and does not go to next page. Seems to be a cookie issue
+2. Umpires have access to see all tabs - umpires must only see Dashboard (matches they are assigned to as well as previously played results of games they were assigned to), thier profile and upcomming matches they are assigned to or matched they would like to be assigned to in thier specific region
+3. team managers must only have access to creat new games from teams that are already created as well as view upcomming matches. Assign umpires (already created) to mataches that they are creating
+4. admins should have access to all views
+5. admins are the only accounts that can create admin accounts
+6. the login page must remove the profile selection as this data should sit in the user creation and login retreval sheet
+7. umpires must add thier rank to thier profile page. default rank is 0
+
 ## Admin Account Credentials
 
 A hardcoded admin account has been created for testing purposes. This account allows administrators to view and manage both the **Teams** and **Umpires** sheets simultaneously.
