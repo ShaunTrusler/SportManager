@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Sport Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sport Manager</h2>
+                <button class="btn-menu-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="matches.html">Matches</a></li>
+                    <li><a href="umpires.html">Umpires</a></li>
+                    <li><a href="team-registration.html">Team Registration</a></li>
+                    <li><a href="game-setup.html">Game Setup</a></li>
+                    <li><a href="sport-registration.html">Sport Registration</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                    <li><a href="users.html" class="active">User Management</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>User Management</h1>
+                <div class="user-info">
+                    <span id="userManagementUser">Admin</span>
+                </div>
+            </header>
+            <div class="dashboard-content">
+                <section class="admin-section">
+                    <h3>Create New User</h3>
+                    <p>Admins can create new users with the role of Admin, Team Manager, or Player.</p>
+                    <form id="createUserForm" class="user-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newUserName">Full Name:</label>
+                                <input type="text" id="newUserName" required placeholder="Full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="newUserEmail">Email:</label>
+                                <input type="email" id="newUserEmail" required placeholder="Email address">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newUserPassword">Password:</label>
+                                <input type="password" id="newUserPassword" required placeholder="Create a password">
+                            </div>
+                            <div class="form-group">
+                                <label for="newUserType">User Type:</label>
+                                <select id="newUserType" required>
+                                    <option value="">Select User Type</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="manager">Team Manager</option>
+                                    <option value="player">Player</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Create User</button>
+                    </form>
+                </section>
+
+                <section class="admin-section" style="margin-top: 30px;">
+                    <h3>Existing Users</h3>
+                    <div id="usersList" class="admin-sheet-list">
+                        <div class="loading">Loading users...</div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/google-sheets-api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/users.js"></script>
+</body>
+</html>

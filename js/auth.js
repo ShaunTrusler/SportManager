@@ -55,6 +55,10 @@ class AuthManager {
      * Register new user
      */
     async register(email, password, name, userType) {
+        return this.createUser(email, password, name, userType, false);
+    }
+
+    async createUser(email, password, name, userType, allowAdmin = false) {
         // Validate inputs
         if (!validateEmail(email)) {
             throw new Error('Invalid email address');
@@ -66,6 +70,10 @@ class AuthManager {
 
         if (!name || !userType) {
             throw new Error('Name and user type are required');
+        }
+
+        if (userType === CONFIG.USER_TYPES.ADMIN && !allowAdmin) {
+            throw new Error('Admin users can only be created by another admin');
         }
 
         // Check if user already exists
@@ -101,9 +109,13 @@ class AuthManager {
             this.users.push(newUser);
             return { success: true, user: newUser };
         } catch (error) {
-            console.error('Error registering user:', error);
-            throw new Error('Failed to register user');
+            console.error('Error creating user:', error);
+            throw new Error('Failed to create user');
         }
+    }
+
+    async createUserAdmin(email, password, name, userType) {
+        return this.createUser(email, password, name, userType, true);
     }
 
     /**
