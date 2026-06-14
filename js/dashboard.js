@@ -16,7 +16,8 @@ class Dashboard {
      * Initialize dashboard
      */
     async init() {
-        if (!this.currentUser) {
+        if (!this.currentUser || this.currentUser.userType !== CONFIG.USER_TYPES.UMPIRE) {
+            showToast('Access denied. Umpires only.', 'error');
             window.location.href = 'index.html';
             return;
         }
