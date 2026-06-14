@@ -31,6 +31,7 @@ const CONFIG = {
     USER_TYPES: {
         PLAYER: 'player',
         MANAGER: 'manager',
+        UMPIRE: 'umpire',
         ADMIN: 'admin'
     },
 
