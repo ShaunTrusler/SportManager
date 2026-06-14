@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Setup - Sport Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sport Manager</h2>
+                <button class="btn-menu-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="matches.html">Matches</a></li>
+                    <li><a href="umpires.html">Umpires</a></li>
+                    <li><a href="team-registration.html">Team Registration</a></li>
+                    <li><a href="game-setup.html" class="active">Game Setup</a></li>
+                    <li><a href="sport-registration.html">Sport Registration</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Game Setup</h1>
+                <button class="btn-primary" onclick="openGameSetupModal()">+ New Game Setup</button>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="filters">
+                    <input type="text" id="searchGames" placeholder="Search game setups..." onkeyup="searchGameSetups()">
+                    <select id="filterSport" onchange="filterGameSetups()">
+                        <option value="">All Sports</option>
+                    </select>
+                </div>
+
+                <div id="gameSetupsList" class="grid-view">
+                    <div class="loading">Loading game setups...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Game Setup Modal -->
+    <div id="gameSetupModal" class="modal">
+        <div class="modal-content large">
+            <span class="close" onclick="closeGameSetupModal()">&times;</span>
+            <h2>Game Setup Configuration</h2>
+
+            <form id="gameSetupForm">
+                <div class="form-group">
+                    <label for="gsName">Setup Name:</label>
+                    <input type="text" id="gsName" required placeholder="e.g., Football Standard Setup">
+                </div>
+
+                <div class="form-group">
+                    <label for="gsSport">Sport:</label>
+                    <select id="gsSport" required onchange="loadGameRules()">
+                        <option value="">Select Sport</option>
+                    </select>
+                </div>
+
+                <h3>Game Rules</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gsTeamSize">Team Size:</label>
+                        <input type="number" id="gsTeamSize" required min="1" placeholder="Players per team">
+                    </div>
+                    <div class="form-group">
+                        <label for="gsDuration">Game Duration (minutes):</label>
+                        <input type="number" id="gsDuration" required min="1" placeholder="e.g., 90">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gsHalves">Number of Halves/Periods:</label>
+                        <input type="number" id="gsHalves" required min="1" placeholder="e.g., 2">
+                    </div>
+                    <div class="form-group">
+                        <label for="gsSubstitutes">Max Substitutes:</label>
+                        <input type="number" id="gsSubstitutes" required min="0" placeholder="e.g., 5">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gsRequiredUmpires">Required Umpires:</label>
+                    <input type="number" id="gsRequiredUmpires" required min="1" placeholder="Number of umpires needed">
+                </div>
+
+                <div class="form-group">
+                    <label for="gsRules">Additional Rules:</label>
+                    <textarea id="gsRules" placeholder="Enter additional rules and specifications" rows="5"></textarea>
+                </div>
+
+                <h3>Scoring System</h3>
+
+                <div class="form-group">
+                    <label>Define Scoring Rules (e.g., Win=3pts, Draw=1pt, Loss=0pts):</label>
+                    <div class="scoring-setup">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gsWinPoints">Win Points:</label>
+                                <input type="number" id="gsWinPoints" required min="0" placeholder="e.g., 3">
+                            </div>
+                            <div class="form-group">
+                                <label for="gsDrawPoints">Draw Points:</label>
+                                <input type="number" id="gsDrawPoints" required min="0" placeholder="e.g., 1">
+                            </div>
+                            <div class="form-group">
+                                <label for="gsLossPoints">Loss Points:</label>
+                                <input type="number" id="gsLossPoints" required min="0" placeholder="e.g., 0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Save Game Setup</button>
+                <button type="button" class="btn-secondary" onclick="closeGameSetupModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/google-sheets-api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/game-setup.js"></script>
+</body>
+</html>

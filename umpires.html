@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umpires - Sport Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/umpires.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sport Manager</h2>
+                <button class="btn-menu-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="matches.html">Matches</a></li>
+                    <li><a href="umpires.html" class="active">Umpires</a></li>
+                    <li><a href="team-registration.html">Team Registration</a></li>
+                    <li><a href="game-setup.html">Game Setup</a></li>
+                    <li><a href="sport-registration.html">Sport Registration</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Umpires</h1>
+                <button id="addUmpireBtn" class="btn-primary" onclick="openAddUmpireModal()">+ Add Umpire</button>
+            </header>
+
+            <div class="umpires-container">
+                <!-- Filters Section -->
+                <div class="filters-section">
+                    <h3>Filters</h3>
+                    <div class="filter-group">
+                        <label for="rankFilter">Rank:</label>
+                        <select id="rankFilter" onchange="applyFilters()">
+                            <option value="">All Ranks</option>
+                            <option value="professional">Professional</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="beginner">Beginner</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="ageFilter">Age Range:</label>
+                        <div class="age-range">
+                            <input type="number" id="ageMin" placeholder="Min" onchange="applyFilters()">
+                            <span>-</span>
+                            <input type="number" id="ageMax" placeholder="Max" onchange="applyFilters()">
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="locationFilter">Location:</label>
+                        <input type="text" id="locationFilter" placeholder="Search location..." onkeyup="applyFilters()">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="regionFilter">Region:</label>
+                        <select id="regionFilter" onchange="applyFilters()">
+                            <option value="">All Regions</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="availabilityFilter">Availability:</label>
+                        <select id="availabilityFilter" onchange="applyFilters()">
+                            <option value="">All Days</option>
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                            <option value="saturday">Saturday</option>
+                            <option value="sunday">Sunday</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="timeFilter">Time Preference:</label>
+                        <select id="timeFilter" onchange="applyFilters()">
+                            <option value="">Any Time</option>
+                            <option value="morning">Morning (6am-12pm)</option>
+                            <option value="afternoon">Afternoon (12pm-6pm)</option>
+                            <option value="evening">Evening (6pm+)</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-secondary" onclick="clearFilters()">Clear Filters</button>
+                </div>
+
+                <!-- Umpires List Section -->
+                <div class="umpires-list-section">
+                    <div class="search-bar">
+                        <input type="text" id="umpireSearch" placeholder="Search umpires by name or sport..." onkeyup="searchUmpires()">
+                    </div>
+
+                    <div id="umpiresList" class="umpires-grid">
+                        <div class="loading">Loading umpires...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Umpire Modal -->
+    <div id="umpireModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddUmpireModal()">&times;</span>
+            <h2>Add New Umpire</h2>
+
+            <form id="umpireForm">
+                <div class="form-group">
+                    <label for="umpireName">Name:</label>
+                    <input type="text" id="umpireName" required placeholder="Full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="umpireEmail">Email:</label>
+                    <input type="email" id="umpireEmail" required placeholder="Email address">
+                </div>
+
+                <div class="form-group">
+                    <label for="umpirePhone">Phone:</label>
+                    <input type="tel" id="umpirePhone" placeholder="Phone number">
+                </div>
+
+                <div class="form-group">
+                    <label for="umpireAge">Age:</label>
+                    <input type="number" id="umpireAge" required placeholder="Age">
+                </div>
+
+                <div class="form-group">
+                    <label for="umpireRank">Rank:</label>
+                    <select id="umpireRank" required>
+                        <option value="">Select Rank</option>
+                        <option value="professional">Professional</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="beginner">Beginner</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="umpireLocation">Location:</label>
+                    <input type="text" id="umpireLocation" required placeholder="City/Location">
+                </div>
+
+                <div class="form-group">
+                    <label for="umpireRegion">Region:</label>
+                    <select id="umpireRegion" required>
+                        <option value="">Select Region</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="umpireSports">Sports (Select all applicable):</label>
+                    <div id="sportsList" class="checkbox-group"></div>
+                </div>
+
+                <h3>Availability Preferences</h3>
+
+                <div class="form-group">
+                    <label>Available Days:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="availableDays" value="monday"> Monday</label>
+                        <label><input type="checkbox" name="availableDays" value="tuesday"> Tuesday</label>
+                        <label><input type="checkbox" name="availableDays" value="wednesday"> Wednesday</label>
+                        <label><input type="checkbox" name="availableDays" value="thursday"> Thursday</label>
+                        <label><input type="checkbox" name="availableDays" value="friday"> Friday</label>
+                        <label><input type="checkbox" name="availableDays" value="saturday"> Saturday</label>
+                        <label><input type="checkbox" name="availableDays" value="sunday"> Sunday</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Preferred Time:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="preferredTime" value="morning"> Morning (6am-12pm)</label>
+                        <label><input type="checkbox" name="preferredTime" value="afternoon"> Afternoon (12pm-6pm)</label>
+                        <label><input type="checkbox" name="preferredTime" value="evening"> Evening (6pm+)</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Save Umpire</button>
+                <button type="button" class="btn-secondary" onclick="closeAddUmpireModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Umpire Profile Modal -->
+    <div id="umpireProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUmpireProfile()">&times;</span>
+            <div id="umpireProfileContent"></div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/google-sheets-api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/umpires.js"></script>
+</body>
+</html>

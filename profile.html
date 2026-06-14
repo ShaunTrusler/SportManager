@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Sport Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sport Manager</h2>
+                <button class="btn-menu-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="matches.html">Matches</a></li>
+                    <li><a href="umpires.html">Umpires</a></li>
+                    <li><a href="team-registration.html">Team Registration</a></li>
+                    <li><a href="game-setup.html">Game Setup</a></li>
+                    <li><a href="sport-registration.html">Sport Registration</a></li>
+                    <li><a href="profile.html" class="active">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>My Profile</h1>
+                <button class="btn-primary" onclick="enableEditMode()">Edit Profile</button>
+            </header>
+
+            <div class="profile-container">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img id="profileAvatar" src="https://via.placeholder.com/150" alt="Profile Avatar">
+                        <button class="btn-change-avatar" onclick="changeAvatar()">Change Photo</button>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profileName">User Name</h2>
+                        <p id="profileRole" class="role-badge">Player</p>
+                        <p id="profileEmail" class="profile-email">email@example.com</p>
+                    </div>
+                </div>
+
+                <!-- Profile Tabs -->
+                <div class="profile-tabs">
+                    <button class="tab-btn active" onclick="switchTab('personal')">Personal Information</button>
+                    <button class="tab-btn" onclick="switchTab('stats')">Statistics</button>
+                    <button class="tab-btn" onclick="switchTab('preferences')">Preferences</button>
+                </div>
+
+                <!-- Tab Content -->
+
+                <!-- Personal Information Tab -->
+                <div id="personalTab" class="tab-content active">
+                    <form id="profileForm">
+                        <h3>Personal Details</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name:</label>
+                                <input type="text" id="firstName" disabled required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name:</label>
+                                <input type="text" id="lastName" disabled required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" disabled required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone:</label>
+                                <input type="tel" id="phone" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Age:</label>
+                                <input type="number" id="age" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location:</label>
+                                <input type="text" id="location" disabled>
+                            </div>
+                        </div>
+
+                        <!-- Player-specific fields -->
+                        <div id="playerFields" style="display: none;">
+                            <h3>Player Information</h3>
+                            
+                            <div class="form-group">
+                                <label for="playerTeam">Current Team:</label>
+                                <select id="playerTeam" disabled>
+                                    <option value="">Select Team</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="playerSports">Sports Playing:</label>
+                                <div id="playerSportsList" class="checkbox-group"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="jerseyNumber">Jersey Number:</label>
+                                <input type="number" id="jerseyNumber" disabled min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="position">Position/Role:</label>
+                                <input type="text" id="position" disabled placeholder="e.g., Forward, Defender">
+                            </div>
+                        </div>
+
+                        <!-- Manager-specific fields -->
+                        <div id="managerFields" style="display: none;">
+                            <h3>Manager Information</h3>
+                            
+                            <div class="form-group">
+                                <label for="managerTeam">Managing Team:</label>
+                                <select id="managerTeam" disabled>
+                                    <option value="">Select Team</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="managerSports">Sports Managing:</label>
+                                <div id="managerSportsList" class="checkbox-group"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="experience">Years of Experience:</label>
+                                <input type="number" id="experience" disabled min="0" placeholder="Years">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bio">Biography:</label>
+                                <textarea id="bio" disabled placeholder="Tell us about yourself" rows="4"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions" id="formActions" style="display: none;">
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                            <button type="button" class="btn-secondary" onclick="cancelEdit()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Statistics Tab -->
+                <div id="statsTab" class="tab-content">
+                    <h3>Your Statistics</h3>
+                    <div id="statsContainer" class="stats-grid">
+                        <div class="loading">Loading statistics...</div>
+                    </div>
+                </div>
+
+                <!-- Preferences Tab -->
+                <div id="preferencesTab" class="tab-content">
+                    <h3>Notification Preferences</h3>
+                    <form id="preferencesForm">
+                        <div class="preference-group">
+                            <label>
+                                <input type="checkbox" id="notifyMatchInvite" checked>
+                                Notify me of match invitations
+                            </label>
+                        </div>
+
+                        <div class="preference-group">
+                            <label>
+                                <input type="checkbox" id="notifyTeamUpdates" checked>
+                                Notify me of team updates
+                            </label>
+                        </div>
+
+                        <div class="preference-group">
+                            <label>
+                                <input type="checkbox" id="notifyUmpireAssign" checked>
+                                Notify me when assigned as umpire
+                            </label>
+                        </div>
+
+                        <div class="preference-group">
+                            <label>
+                                <input type="checkbox" id="notifyScores" checked>
+                                Notify me of match results
+                            </label>
+                        </div>
+
+                        <h3 style="margin-top: 30px;">Account Settings</h3>
+
+                        <button type="button" class="btn-secondary" onclick="openChangePasswordModal()">Change Password</button>
+                        <button type="button" class="btn-danger" onclick="confirmDeleteAccount()">Delete Account</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeChangePasswordModal()">&times;</span>
+            <h2>Change Password</h2>
+
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password:</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+
+                <button type="submit" class="btn-primary">Change Password</button>
+                <button type="button" class="btn-secondary" onclick="closeChangePasswordModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/google-sheets-api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

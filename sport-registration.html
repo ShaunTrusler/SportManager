@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sport Registration - Sport Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sport Manager</h2>
+                <button class="btn-menu-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="matches.html">Matches</a></li>
+                    <li><a href="umpires.html">Umpires</a></li>
+                    <li><a href="team-registration.html">Team Registration</a></li>
+                    <li><a href="game-setup.html">Game Setup</a></li>
+                    <li><a href="sport-registration.html" class="active">Sport Registration</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Sport Registration</h1>
+                <button class="btn-primary" onclick="openSportModal()">+ Register New Sport</button>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="filters">
+                    <input type="text" id="searchSports" placeholder="Search sports..." onkeyup="searchSports()">
+                </div>
+
+                <div id="sportsList" class="sports-grid">
+                    <div class="loading">Loading sports...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Sport Registration Modal -->
+    <div id="sportModal" class="modal">
+        <div class="modal-content large">
+            <span class="close" onclick="closeSportModal()">&times;</span>
+            <h2>Register New Sport</h2>
+
+            <form id="sportForm">
+                <div class="form-group">
+                    <label for="sportName">Sport Name:</label>
+                    <input type="text" id="sportName" required placeholder="e.g., Football, Basketball">
+                </div>
+
+                <div class="form-group">
+                    <label for="sportCategory">Category:</label>
+                    <select id="sportCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="team">Team Sport</option>
+                        <option value="individual">Individual Sport</option>
+                        <option value="mixed">Mixed</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sportDescription">Description:</label>
+                    <textarea id="sportDescription" placeholder="Sport description" rows="4"></textarea>
+                </div>
+
+                <h3>Basic Rules</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sportTeamSize">Standard Team Size:</label>
+                        <input type="number" id="sportTeamSize" min="1" placeholder="Players per team">
+                    </div>
+                    <div class="form-group">
+                        <label for="sportDuration">Standard Game Duration (minutes):</label>
+                        <input type="number" id="sportDuration" min="1" placeholder="e.g., 90">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sportUmpires">Number of Umpires Required:</label>
+                    <input type="number" id="sportUmpires" required min="1" placeholder="e.g., 2">
+                </div>
+
+                <h3>Scoring System</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sportWinPoints">Win Points:</label>
+                        <input type="number" id="sportWinPoints" required min="0" placeholder="e.g., 3">
+                    </div>
+                    <div class="form-group">
+                        <label for="sportDrawPoints">Draw Points:</label>
+                        <input type="number" id="sportDrawPoints" required min="0" placeholder="e.g., 1">
+                    </div>
+                    <div class="form-group">
+                        <label for="sportLossPoints">Loss Points:</label>
+                        <input type="number" id="sportLossPoints" required min="0" placeholder="e.g., 0">
+                    </div>
+                </div>
+
+                <h3>League Settings</h3>
+
+                <div class="form-group">
+                    <label for="sportMinAge">Minimum Age:</label>
+                    <input type="number" id="sportMinAge" min="0" placeholder="Minimum participant age">
+                </div>
+
+                <div class="form-group">
+                    <label for="sportMaxAge">Maximum Age (leave blank for no limit):</label>
+                    <input type="number" id="sportMaxAge" min="0" placeholder="Maximum participant age">
+                </div>
+
+                <div class="form-group">
+                    <label for="sportRegions">Available Regions (comma-separated):</label>
+                    <textarea id="sportRegions" placeholder="e.g., North Region, South Region, East Region" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Register Sport</button>
+                <button type="button" class="btn-secondary" onclick="closeSportModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sport Details Modal -->
+    <div id="sportDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSportDetailsModal()">&times;</span>
+            <div id="sportDetailsContent"></div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/google-sheets-api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/sport-registration.js"></script>
+</body>
+</html>

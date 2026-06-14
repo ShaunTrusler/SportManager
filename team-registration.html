@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Registration - Sport Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sport Manager</h2>
+                <button class="btn-menu-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="matches.html">Matches</a></li>
+                    <li><a href="umpires.html">Umpires</a></li>
+                    <li><a href="team-registration.html" class="active">Team Registration</a></li>
+                    <li><a href="game-setup.html">Game Setup</a></li>
+                    <li><a href="sport-registration.html">Sport Registration</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Team Registration</h1>
+                <button class="btn-primary" onclick="openTeamModal()">+ Register New Team</button>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="filters">
+                    <input type="text" id="searchTeams" placeholder="Search teams..." onkeyup="searchTeams()">
+                    <select id="filterSport" onchange="filterTeams()">
+                        <option value="">All Sports</option>
+                    </select>
+                </div>
+
+                <div id="teamsList" class="teams-grid">
+                    <div class="loading">Loading teams...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Team Registration Modal -->
+    <div id="teamModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTeamModal()">&times;</span>
+            <h2>Register New Team</h2>
+
+            <form id="teamForm">
+                <div class="form-group">
+                    <label for="teamName">Team Name:</label>
+                    <input type="text" id="teamName" required placeholder="Enter team name">
+                </div>
+
+                <div class="form-group">
+                    <label for="teamSport">Sport:</label>
+                    <select id="teamSport" required>
+                        <option value="">Select Sport</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="teamLocation">Location:</label>
+                    <input type="text" id="teamLocation" required placeholder="Team location">
+                </div>
+
+                <div class="form-group">
+                    <label for="teamManager">Manager Name:</label>
+                    <input type="text" id="teamManager" required placeholder="Manager name">
+                </div>
+
+                <div class="form-group">
+                    <label for="teamManagerEmail">Manager Email:</label>
+                    <input type="email" id="teamManagerEmail" required placeholder="Manager email">
+                </div>
+
+                <div class="form-group">
+                    <label for="teamManagerPhone">Manager Phone:</label>
+                    <input type="tel" id="teamManagerPhone" placeholder="Manager phone">
+                </div>
+
+                <div class="form-group">
+                    <label for="teamPlayers">Number of Players:</label>
+                    <input type="number" id="teamPlayers" required min="1" placeholder="Number of players">
+                </div>
+
+                <div class="form-group">
+                    <label for="teamDescription">Description:</label>
+                    <textarea id="teamDescription" placeholder="Team description" rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Register Team</button>
+                <button type="button" class="btn-secondary" onclick="closeTeamModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Team Details Modal -->
+    <div id="teamDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTeamDetailsModal()">&times;</span>
+            <div id="teamDetailsContent"></div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/google-sheets-api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/team-registration.js"></script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+/* Create Match Page Styles */
+
+.create-match-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.form-section {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.form-section h2 {
+    margin-top: 0;
+    color: var(--text-dark);
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 15px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    border-top: 2px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.form-actions button {
+    flex: 1;
+}
+
+/* Umpires Section */
+.umpires-section {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+.umpires-section h2 {
+    margin-top: 0;
+    color: var(--text-dark);
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.umpires-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.filter-select {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    font-size: 14px;
+    min-width: 150px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Umpires List */
+.umpires-list {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    max-height: 400px;
+    margin-bottom: 20px;
+}
+
+.umpire-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.umpire-item:last-child {
+    border-bottom: none;
+}
+
+.umpire-item:hover {
+    background-color: #f8fafc;
+}
+
+.umpire-checkbox {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 5px;
+}
+
+.umpire-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.umpire-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.umpire-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.umpire-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+    flex: 1;
+}
+
+.umpire-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.umpire-badge.professional {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.umpire-badge.advanced {
+    background-color: #dbeafe;
+    color: #0c4a6e;
+}
+
+.umpire-badge.beginner {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.umpire-details {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.umpire-sports {
+    font-size: 13px;
+    color: var(--text-dark);
+}
+
+.umpire-sports strong {
+    color: var(--text-dark);
+}
+
+.no-results {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-light);
+}
+
+/* Selected Umpires Summary */
+.selected-umpires-summary {
+    border-top: 2px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.selected-umpires-summary h4 {
+    margin-top: 0;
+    color: var(--text-dark);
+}
+
+.selected-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.selected-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.selected-item span {
+    color: var(--text-dark);
+}
+
+.selected-item small {
+    color: var(--text-light);
+}
+
+.btn-remove {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.btn-remove:hover {
+    background-color: #dc2626;
+}
+
+.no-selection {
+    color: var(--text-light);
+    font-style: italic;
+    margin: 0;
+    padding: 10px 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .create-match-container {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .umpires-list {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .create-match-container {
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .form-section,
+    .umpires-section {
+        padding: 15px;
+    }
+
+    .umpires-filter {
+        flex-direction: column;
+    }
+
+    .filter-select {
+        min-width: auto;
+    }
+
+    .umpire-details {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .selected-item {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .btn-remove {
+        align-self: flex-end;
+    }
+}

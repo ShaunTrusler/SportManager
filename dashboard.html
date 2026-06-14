@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sport Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sport Manager</h2>
+                <button class="btn-menu-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                    <li><a href="matches.html">Matches</a></li>
+                    <li><a href="umpires.html">Umpires</a></li>
+                    <li><a href="team-registration.html">Team Registration</a></li>
+                    <li><a href="game-setup.html">Game Setup</a></li>
+                    <li><a href="sport-registration.html">Sport Registration</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <span id="userDisplay">User</span>
+                    <img id="userAvatar" src="https://via.placeholder.com/40" alt="User Avatar" class="avatar">
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Welcome Section -->
+                <div class="welcome-section">
+                    <h2>Welcome, <span id="userName">User</span>!</h2>
+                    <p id="welcomeMessage">Your next matches are coming up soon.</p>
+                </div>
+
+                <!-- Upcoming Matches Section -->
+                <section class="upcoming-matches-section">
+                    <div class="section-header">
+                        <h3>Next 4 Upcoming Matches</h3>
+                        <a href="matches.html" class="btn-link">View All Matches →</a>
+                    </div>
+
+                    <div id="upcomingMatchesContainer" class="matches-grid">
+                        <div class="loading">Loading matches...</div>
+                    </div>
+                </section>
+
+                <!-- Quick Stats (for managers) -->
+                <section id="managerStatsSection" class="manager-stats-section" style="display: none;">
+                    <h3>Quick Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalMatches">0</div>
+                            <div class="stat-label">Total Matches</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="upcomingCount">0</div>
+                            <div class="stat-label">Upcoming Matches</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="registeredTeams">0</div>
+                            <div class="stat-label">Registered Teams</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="availableUmpires">0</div>
+                            <div class="stat-label">Available Umpires</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Admin Section (Teams & Umpires View) -->
+                <section id="adminSection" class="admin-section" style="display: none;">
+                    <h3>📊 System Administration</h3>
+                    <div class="admin-content">
+                        <div id="adminTeamsContainer" class="admin-container">
+                            <div class="loading">Loading teams...</div>
+                        </div>
+                        <div id="adminUmpiresContainer" class="admin-container">
+                            <div class="loading">Loading umpires...</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <a href="admin-test.html" class="btn-secondary">Open Admin Sheets Tester</a>
+                    </div>
+
+                    <div id="adminSheetTestSection" class="admin-sheet-test-section">
+                        <h3>🧪 Google Sheets Test</h3>
+                        <div class="admin-test-actions">
+                            <button type="button" class="btn-primary" onclick="dashboard.runSheetMetadataTest()">Test Connection</button>
+                            <button type="button" class="btn-secondary" onclick="dashboard.runSheetReadTest()">Read Users Sheet</button>
+                            <button type="button" class="btn-secondary" onclick="dashboard.runSheetAppendTest()">Append Test Row</button>
+                            <button type="button" class="btn-secondary" onclick="dashboard.clearSheetTestOutput()">Clear Output</button>
+                        </div>
+                        <div id="sheetTestOutput" class="sheet-test-output">Use these buttons to test Google Sheets connectivity and operations.</div>
+                    </div>
+                </section>
+
+                <!-- Recent Activity -->
+                <section class="recent-activity-section">
+                    <h3>Recent Activity</h3>
+                    <div id="recentActivityContainer" class="activity-list">
+                        <div class="loading">Loading activity...</div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/google-sheets-api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

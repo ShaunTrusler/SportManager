@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matches - Sport Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/matches.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sport Manager</h2>
+                <button class="btn-menu-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="matches.html" class="active">Matches</a></li>
+                    <li><a href="umpires.html">Umpires</a></li>
+                    <li><a href="team-registration.html">Team Registration</a></li>
+                    <li><a href="game-setup.html">Game Setup</a></li>
+                    <li><a href="sport-registration.html">Sport Registration</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Matches</h1>
+                <a href="create-match.html" class="btn-primary">+ Create Match</a>
+            </header>
+
+            <div class="matches-container">
+                <!-- View Toggle -->
+                <div class="view-toggle">
+                    <button class="toggle-btn active" onclick="switchView('calendar')">📅 Calendar View</button>
+                    <button class="toggle-btn" onclick="switchView('list')">📋 List View</button>
+                </div>
+
+                <!-- Calendar View -->
+                <div id="calendarView" class="calendar-view">
+                    <div class="calendar-header">
+                        <button onclick="previousMonth()">←</button>
+                        <h2 id="currentMonth"></h2>
+                        <button onclick="nextMonth()">→</button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div id="calendarDays" class="calendar-days"></div>
+                </div>
+
+                <!-- List View -->
+                <div id="listView" class="list-view" style="display: none;">
+                    <div class="filters">
+                        <input type="text" id="searchMatches" placeholder="Search matches..." class="search-input">
+                        <select id="filterStatus" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <select id="filterSport" class="filter-select">
+                            <option value="">All Sports</option>
+                        </select>
+                    </div>
+                    <div id="matchesList" class="matches-list">
+                        <div class="loading">Loading matches...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Match Details Modal -->
+    <div id="matchDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMatchDetailsModal()">&times;</span>
+            <div id="matchDetailsContent"></div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/google-sheets-api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/matches.js"></script>
+</body>
+</html>
