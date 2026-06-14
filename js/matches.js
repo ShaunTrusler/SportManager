@@ -4,7 +4,9 @@ class MatchesManager {
     constructor() {
         this.currentUser = getCurrentUser();
         this.matches = [];
+        this.visibleMatches = [];
         this.sports = [];
+        this.teams = [];
         this.umpires = [];
         this.currentMonth = new Date();
         this.selectedUmpires = [];
@@ -37,10 +39,15 @@ class MatchesManager {
             const sportsData = await sheetsAPI.readSheet(CONFIG.SHEETS.SPORTS);
             this.processSports(sportsData);
 
+            // Load teams for manager matching
+            const teamsData = await sheetsAPI.readSheet(CONFIG.SHEETS.TEAMS);
+            this.processTeams(teamsData);
+
             // Load umpires
             const umpiresData = await sheetsAPI.readSheet(CONFIG.SHEETS.UMPIRES);
             this.processUmpires(umpiresData);
 
+            this.filterMatchesForCurrentUser();
             this.updateSportFilters();
         } catch (error) {
             console.error('Error loading matches data:', error);
@@ -65,7 +72,7 @@ class MatchesManager {
             status: row[7],
             homeScore: row[8] || '-',
             awayScore: row[9] || '-',
-            umpires: row[10] ? row[10].split(',') : [],
+            umpires: row[10] ? row[10].split(',').map(u => u.trim()) : [],
             notes: row[11] || ''
         }));
     }
@@ -96,11 +103,102 @@ class MatchesManager {
             rank: row[3],
             location: row[4],
             region: row[5],
-            sports: row[6] ? row[6].split(',') : [],
-            availableDays: row[7] ? row[7].split(',') : [],
-            preferredTimes: row[8] ? row[8].split(',') : [],
+            sports: row[6] ? row[6].split(',').map(s => s.trim()) : [],
+            availableDays: row[7] ? row[7].split(',').map(d => d.trim().toLowerCase()) : [],
+            preferredTimes: row[8] ? row[8].split(',').map(t => t.trim().toLowerCase()) : [],
             age: row[9]
         }));
+    }
+
+    processTeams(data) {
+        if (!data || data.length <= 1) return;
+
+        this.teams = data.slice(1).map(row => ({
+            id: row[0],
+            name: row[1],
+            sport: row[2],
+            location: row[3],
+            manager: row[4],
+            managerEmail: row[5]
+        }));
+    }
+
+    filterMatchesForCurrentUser() {
+        this.visibleMatches = this.matches.filter(match => this.userCanSeeMatch(match));
+    }
+
+    getManagerTeamNames() {
+        return this.teams
+            .filter(team => team.managerEmail === this.currentUser.email || team.manager === this.currentUser.name)
+            .map(team => team.name);
+    }
+
+    getCurrentUmpireRecord() {
+        if (!this.currentUser) return null;
+        return this.umpires.find(u => u.email === this.currentUser.email || u.name === this.currentUser.name);
+    }
+
+    userCanSeeMatch(match) {
+        if (!this.currentUser) return false;
+
+        if (this.currentUser.userType === CONFIG.USER_TYPES.ADMIN) {
+            return true;
+        }
+
+        if (this.currentUser.userType === CONFIG.USER_TYPES.MANAGER) {
+            const managedTeamNames = this.getManagerTeamNames();
+            return managedTeamNames.includes(match.homeTeam) || managedTeamNames.includes(match.awayTeam);
+        }
+
+        if (this.currentUser.userType === CONFIG.USER_TYPES.UMPIRE) {
+            const umpire = this.getCurrentUmpireRecord();
+            if (!umpire) return false;
+
+            const assignedUmpires = Array.isArray(match.umpires) ? match.umpires : [];
+            if (assignedUmpires.includes(umpire.id) || assignedUmpires.includes(umpire.email) || assignedUmpires.includes(umpire.name)) {
+                return true;
+            }
+
+            if (assignedUmpires.length === 0) {
+                return this.matchFitsUmpire(match, umpire);
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    matchFitsUmpire(match, umpire) {
+        if (!umpire) return false;
+
+        const matchLocation = match.location ? match.location.toLowerCase() : '';
+        const umpireLocation = umpire.location ? umpire.location.toLowerCase() : '';
+
+        if (umpireLocation && matchLocation && !matchLocation.includes(umpireLocation) && !umpireLocation.includes(matchLocation)) {
+            return false;
+        }
+
+        const matchDate = new Date(match.date);
+        const matchDay = matchDate.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+        if (umpire.availableDays.length && !umpire.availableDays.includes(matchDay)) {
+            return false;
+        }
+
+        const matchTimeSlot = this.parseMatchTimeslot(match.time);
+        if (umpire.preferredTimes.length && !umpire.preferredTimes.includes(matchTimeSlot)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    parseMatchTimeslot(matchTime) {
+        if (!matchTime) return '';
+        const [hours] = matchTime.split(':').map(Number);
+        if (hours >= 6 && hours < 12) return 'morning';
+        if (hours >= 12 && hours < 17) return 'afternoon';
+        return 'evening';
     }
 
     /**
@@ -144,6 +242,11 @@ class MatchesManager {
         const filterSport = document.getElementById('filterSport');
         if (filterSport) {
             filterSport.addEventListener('change', (e) => this.filterMatches(e.target.value, 'sport'));
+        }
+
+        const createMatchButton = document.getElementById('createMatchButton');
+        if (createMatchButton && this.currentUser.userType !== CONFIG.USER_TYPES.MANAGER) {
+            createMatchButton.style.display = 'none';
         }
     }
 
@@ -209,7 +312,7 @@ class MatchesManager {
 
         // Add matches for this day
         if (dateStr) {
-            const dayMatches = this.matches.filter(m => m.date === dateStr);
+            const dayMatches = this.visibleMatches.filter(m => m.date === dateStr);
             const matchesDiv = document.createElement('div');
             matchesDiv.className = 'calendar-day-matches';
             
@@ -268,12 +371,12 @@ class MatchesManager {
         const matchesList = document.getElementById('matchesList');
         if (!matchesList) return;
 
-        if (this.matches.length === 0) {
+        if (this.visibleMatches.length === 0) {
             matchesList.innerHTML = '<div class="loading">No matches found</div>';
             return;
         }
 
-        matchesList.innerHTML = this.matches.map(match => `
+        matchesList.innerHTML = this.visibleMatches.map(match => `
             <div class="match-list-item" onclick="matchesManager.showMatchDetails('${match.id}')">
                 <div class="match-list-info">
                     <div class="match-list-title">
@@ -391,7 +494,7 @@ class MatchesManager {
             return;
         }
 
-        const filtered = this.matches.filter(match =>
+        const filtered = this.visibleMatches.filter(match =>
             match.homeTeam.toLowerCase().includes(query.toLowerCase()) ||
             match.awayTeam.toLowerCase().includes(query.toLowerCase()) ||
             match.location.toLowerCase().includes(query.toLowerCase())
@@ -409,7 +512,7 @@ class MatchesManager {
             return;
         }
 
-        const filtered = this.matches.filter(match => match[type] === value);
+        const filtered = this.visibleMatches.filter(match => match[type] === value);
         this.displayFilteredMatches(filtered);
     }
 

@@ -18,6 +18,12 @@ class CreateMatchManager {
             return;
         }
 
+        if (this.currentUser.userType !== CONFIG.USER_TYPES.MANAGER) {
+            showToast('Only team managers can create matches.', 'error');
+            window.location.href = 'matches.html';
+            return;
+        }
+
         this.setupUI();
         await this.loadData();
         this.setupEventListeners();
@@ -39,6 +45,7 @@ class CreateMatchManager {
             // Load teams
             const teamsData = await sheetsAPI.readSheet(CONFIG.SHEETS.TEAMS);
             this.processTeams(teamsData);
+            this.filterTeamsByRegion();
 
             // Load sports
             const sportsData = await sheetsAPI.readSheet(CONFIG.SHEETS.SPORTS);
@@ -67,6 +74,20 @@ class CreateMatchManager {
             sport: row[2],
             location: row[3]
         }));
+    }
+
+    filterTeamsByRegion() {
+        if (!this.currentUser || !this.currentUser.location) {
+            return;
+        }
+
+        const region = this.currentUser.location.toLowerCase().trim();
+        if (!region) return;
+
+        this.teams = this.teams.filter(team => {
+            const teamLocation = team.location ? team.location.toLowerCase() : '';
+            return teamLocation === region || teamLocation.includes(region) || region.includes(teamLocation);
+        });
     }
 
     /**

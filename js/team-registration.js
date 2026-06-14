@@ -15,6 +15,7 @@ class TeamRegistrationManager {
         }
 
         await this.loadData();
+        this.configureTeamRegistration();
         this.loadTeams();
         this.setupEventListeners();
     }
@@ -84,6 +85,34 @@ class TeamRegistrationManager {
         }
     }
 
+    configureTeamRegistration() {
+        const createTeamButton = document.getElementById('createTeamButton');
+        const teamManagerInput = document.getElementById('teamManager');
+        const teamManagerEmailInput = document.getElementById('teamManagerEmail');
+        const teamLocationInput = document.getElementById('teamLocation');
+
+        if (this.currentUser.userType !== CONFIG.USER_TYPES.MANAGER) {
+            if (createTeamButton) {
+                createTeamButton.style.display = 'none';
+            }
+            return;
+        }
+
+        if (teamManagerInput) {
+            teamManagerInput.value = this.currentUser.name;
+            teamManagerInput.readOnly = true;
+        }
+
+        if (teamManagerEmailInput) {
+            teamManagerEmailInput.value = this.currentUser.email;
+            teamManagerEmailInput.readOnly = true;
+        }
+
+        if (teamLocationInput && this.currentUser.location) {
+            teamLocationInput.value = this.currentUser.location;
+        }
+    }
+
     setupEventListeners() {
         const teamForm = document.getElementById('teamForm');
         if (teamForm) {
@@ -149,13 +178,18 @@ class TeamRegistrationManager {
     async handleRegisterTeam(e) {
         e.preventDefault();
 
+        if (this.currentUser.userType !== CONFIG.USER_TYPES.MANAGER) {
+            showToast('Only team managers can register new teams.', 'error');
+            return;
+        }
+
         const formData = {
             id: generateId(),
             name: document.getElementById('teamName').value,
             sport: document.getElementById('teamSport').value,
             location: document.getElementById('teamLocation').value,
-            manager: document.getElementById('teamManager').value,
-            managerEmail: document.getElementById('teamManagerEmail').value,
+            manager: this.currentUser.name,
+            managerEmail: this.currentUser.email,
             managerPhone: document.getElementById('teamManagerPhone').value,
             playerCount: document.getElementById('teamPlayers').value,
             description: document.getElementById('teamDescription').value

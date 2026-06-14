@@ -102,6 +102,17 @@ function getCurrentUser() {
     return user ? JSON.parse(user) : null;
 }
 
+// Helper function to show or hide admin-only sidebar links
+function initializeAdminLinks() {
+    const currentUser = getCurrentUser();
+    const adminLinks = document.querySelectorAll('.admin-nav-link');
+    const shouldShow = currentUser && currentUser.userType === CONFIG.USER_TYPES.ADMIN;
+
+    adminLinks.forEach(link => {
+        link.style.display = shouldShow ? 'block' : 'none';
+    });
+}
+
 // Helper function to set the current user
 function setCurrentUser(user) {
     localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
@@ -127,9 +138,13 @@ function clearAuthToken() {
     localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
 }
 
-// Initialize the app when DOM is ready
+// Initialize the app and admin links when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeApp);
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeApp();
+        initializeAdminLinks();
+    });
 } else {
     initializeApp();
+    initializeAdminLinks();
 }

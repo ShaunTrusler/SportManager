@@ -68,14 +68,12 @@ class GoogleSheetsAPI {
                 }
             };
 
-            // Attempt to request access token
             try {
                 this.tokenClient.requestAccessToken({ prompt: interactive ? 'consent' : '' });
             } catch (err) {
                 return reject(err);
             }
 
-            // Poll for token up to 15 seconds
             const start = Date.now();
             const interval = setInterval(() => {
                 if (this.accessToken) {
@@ -90,6 +88,18 @@ class GoogleSheetsAPI {
                 }
             }, 300);
         });
+    }
+
+    async ensureAccessToken(interactive = true) {
+        if (this.useLocalStorage) {
+            return null;
+        }
+
+        if (this.accessToken) {
+            return this.accessToken;
+        }
+
+        return await this.requestAccessToken(interactive);
     }
 
     /**
@@ -153,6 +163,8 @@ class GoogleSheetsAPI {
         }
 
         try {
+            await this.ensureAccessToken(true);
+
             const fullRange = `${sheetName}!${range}`;
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${this.spreadsheetId}/values/${encodeURIComponent(fullRange)}?valueInputOption=USER_ENTERED`;
             const headers = { 'Content-Type': 'application/json' };
@@ -166,13 +178,11 @@ class GoogleSheetsAPI {
 
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-            // Clear cache for this sheet
             this.clearSheetCache(sheetName);
 
             return await response.json();
         } catch (error) {
             console.error(`Error writing to sheet ${sheetName}:`, error);
-            // Fallback to localStorage
             return this.writeLocalStorage(sheetName, values);
         }
     }
@@ -186,6 +196,8 @@ class GoogleSheetsAPI {
         }
 
         try {
+            await this.ensureAccessToken(true);
+
             const fullRange = `${sheetName}!A1`;
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${this.spreadsheetId}/values/${encodeURIComponent(fullRange)}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
             const headers = { 'Content-Type': 'application/json' };
@@ -199,13 +211,11 @@ class GoogleSheetsAPI {
 
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             
-            // Clear cache for this sheet
             this.clearSheetCache(sheetName);
             
             return await response.json();
         } catch (error) {
             console.error(`Error appending to sheet ${sheetName}:`, error);
-            // Fallback to localStorage
             return this.appendLocalStorage(sheetName, values);
         }
     }

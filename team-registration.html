@@ -25,6 +25,8 @@
                     <li><a href="game-setup.html">Game Setup</a></li>
                     <li><a href="sport-registration.html">Sport Registration</a></li>
                     <li><a href="profile.html">Profile</a></li>
+                    <li class="admin-nav-link" style="display:none"><a href="users.html">User Management</a></li>
+                    <li class="admin-nav-link" style="display:none"><a href="admin-test.html">Sheets Test</a></li>
                 </ul>
             </nav>
 
@@ -37,9 +39,7 @@
         <main class="main-content">
             <header class="top-bar">
                 <h1>Team Registration</h1>
-                <button class="btn-primary" onclick="openTeamModal()">+ Register New Team</button>
-            </header>
-
+                    <button id="createTeamButton" class="btn-primary" onclick="openTeamModal()">+ Register New Team</button>
             <div class="content-wrapper">
                 <div class="filters">
                     <input type="text" id="searchTeams" placeholder="Search teams..." onkeyup="searchTeams()">
